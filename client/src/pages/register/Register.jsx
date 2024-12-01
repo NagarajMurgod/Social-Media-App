@@ -12,6 +12,7 @@ export default function Register() {
         </div>
         <div className="loginRight">
           <div className="loginBox">
+            <h3 className="loginboxtitle">Create a new account</h3>
             <input placeholder="Username" className="loginInput" />
             <input placeholder="Email" className="loginInput" />
             <input placeholder="Password" className="loginInput" />

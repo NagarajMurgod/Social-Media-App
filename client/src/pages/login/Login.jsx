@@ -11,7 +11,9 @@ export default function Login() {
           </span>
         </div>
         <div className="loginRight">
+          
           <div className="loginBox">
+            <h3 className="loginboxtitle">Log in to Facebook</h3>
             <input placeholder="Email" className="loginInput" />
             <input placeholder="Password" className="loginInput" />
             <button className="loginButton">Log In</button>
