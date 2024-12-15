@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTH_USER_MODEL = 'authentication.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authentication',
+    'common',
+    'posts',
+    'users',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -75,10 +82,15 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'social_media_clone_db',
+        'USER' : 'postgres',
+        'PASSWORD' : 'postgres',
+        'HOST':'127.0.0.1',
+        'PORT':'5432'
     }
 }
+
 
 
 # Password validation
@@ -121,3 +133,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    )
+   
+}
