@@ -7,11 +7,25 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model,login
 from common.helpers import validation_error_handler
 from django.contrib.auth.hashers import check_password
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.utils.decorators import method_decorator
 # Create your views here.
 
 User = get_user_model()
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class SetCSRFToken(APIView):
+    permission_classes = [AllowAny]
+    def get(self, *args, **kwargs):
+        return Response({
+            "status" : "success",
+            "message" : "CSRF cookie is set",
+            "payload" : {}
+        })
+
+
+@method_decorator(csrf_protect, name='dispatch')
 class SignupApiView(APIView):
     permission_classes = [AllowAny]
     serializer_class = CreateUserSerializer
@@ -49,6 +63,7 @@ class SignupApiView(APIView):
         })
 
 
+@method_decorator(csrf_protect, name='dispatch')
 class LoginApiView(APIView):
     permission_classes=[AllowAny]
     serializer_class = LoginUserSerializer
@@ -93,3 +108,4 @@ class LoginApiView(APIView):
                 "message" : "User does not exists",
                 "payload" : {}
             })
+

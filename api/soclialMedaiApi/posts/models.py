@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import TimeStampedModel
 from django.contrib.auth import get_user_model
+from common.utils import image_path
 
 User = get_user_model()
 
@@ -19,7 +20,7 @@ class Tag(TimeStampedModel):
 
 class Post(TimeStampedModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name='posts')
-    image = models.ImageField(upload_to="posts/post_images")
+    image = models.ImageField(upload_to=image_path)
     caption = models.CharField(max_length=255)
     like_count= models.IntegerField(default=0)
     tag = models.ManyToManyField(Tag, through="PostTag",related_name="posts")
