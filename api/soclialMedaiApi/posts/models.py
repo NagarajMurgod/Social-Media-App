@@ -23,7 +23,7 @@ class Post(TimeStampedModel):
     image = models.ImageField(upload_to=image_path)
     caption = models.CharField(max_length=255)
     like_count= models.IntegerField(default=0)
-    tag = models.ManyToManyField(Tag, through="PostTag",related_name="posts")
+    tags = models.ManyToManyField(Tag, through="PostTag",related_name="posts")
 
     def __str__(self):
         return str(self.id)+" posted by "+str(self.user_id)
@@ -54,13 +54,13 @@ class Comment(TimeStampedModel):
 
 class PostTag(TimeStampedModel):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    tags = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
     class Meta:
 
         constraints = [
             models.UniqueConstraint(
-                fields=["post_id", "tag_id"],
+                fields=["post_id", "tags_id"],
                 name = "unique_post_tag"
             )
         ]
