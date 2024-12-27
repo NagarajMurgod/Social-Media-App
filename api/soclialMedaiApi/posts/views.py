@@ -1,13 +1,13 @@
 from rest_framework.views import APIView
 from .serializers import UploadPostSerializer,PostSerializer
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView,DestroyAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Post
 import json
 from rest_framework.pagination import CursorPagination
-
+from .permissions import IsPostOwner
 
 
 class PostPagination(CursorPagination):
@@ -34,7 +34,7 @@ class ListCreatePostView(ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         request_data = request.data
         tags = request_data["tags"]
-        request_data["tags"] = [json.loads(tags)]
+        request_data["tags"] = json.loads(tags)
         serializer = self.get_serializer(data=request_data)
         serializer.is_valid(raise_exception=True)
         serializer.validated_data['user'] = request.user
@@ -46,3 +46,8 @@ class ListCreatePostView(ListCreateAPIView):
             "payload" : serializer.data
         },status = status.HTTP_201_CREATED)
     
+
+class DeletePostView(DestroyAPIView):
+    queryset = Post.objects.all()
+    lookup_field = "id"
+    permission_classes = [IsPostOwner]

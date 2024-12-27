@@ -2,6 +2,7 @@ from django.db import models
 from common.models import TimeStampedModel
 from django.contrib.auth import get_user_model
 from common.utils import image_path
+import os
 
 User = get_user_model()
 
@@ -27,6 +28,16 @@ class Post(TimeStampedModel):
 
     def __str__(self):
         return str(self.id)+" posted by "+str(self.user_id)
+    
+
+    def delete(self,*args, **kwargs):
+        if self.image:
+            file_path = self.image.path
+            print(file_path)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+        super().delete(*args, **kwargs)
 
 
 
