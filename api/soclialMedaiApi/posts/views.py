@@ -1,16 +1,21 @@
 from rest_framework.views import APIView
-from .serializers import UploadPostSerializer,PostSerializer
+from .serializers import UploadPostSerializer,PostSerializer,CommentSerializer
 from rest_framework.generics import ListCreateAPIView,DestroyAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Post
+from .models import Post,Comment
 import json
 from rest_framework.pagination import CursorPagination
 from .permissions import IsPostOwner
+from rest_framework import viewsets
 
 
 class PostPagination(CursorPagination):
+    page_size = 2  # Number of posts to load per request
+    ordering = '-created_at'  # Order by the latest posts
+
+class CommentPagination(CursorPagination):
     page_size = 2  # Number of posts to load per request
     ordering = '-created_at'  # Order by the latest posts
 
@@ -51,3 +56,27 @@ class DeletePostView(DestroyAPIView):
     queryset = Post.objects.all()
     lookup_field = "id"
     permission_classes = [IsPostOwner]
+
+
+class ManagePostCommentsView(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    pagination_class = CommentPagination
+
+    def create(self, request, *args, **kwargs):
+        request.data["user"] = request.user.id
+        post = Post.objects.filter(pk = self.kwargs["post_id"]).first()
+        if post:
+            request.data["post"] = post.id
+            return super().create(request, *args, **kwargs)
+        else:
+            return Response({
+                "status" : "Error",
+                "message" : "Post does not exists",
+                "payload" : {}
+            }, status=status.HTTP_404_NOT_FOUND)
+
+    
+    def get_queryset(self):
+        post = Post.objects.get(pk=self.kwargs['post_id'])
+        return Comment.objects.filter(post=post)
+    

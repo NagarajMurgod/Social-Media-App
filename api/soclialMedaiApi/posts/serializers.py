@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post,Tag
+from .models import Post,Tag,Comment
 
 
 
@@ -12,7 +12,8 @@ class TagsSerializer(serializers.ModelSerializer):
                 "validators": []
             }
         }
-    
+
+
 class UploadPostSerializer(serializers.ModelSerializer):
 
     tags = TagsSerializer(many=True,required=False)
@@ -39,3 +40,18 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post 
         fields = ["id","image", "caption", "like_count", "tags"]
 
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Comment
+        fields = ["id", "user", "post","detail"]
+    
+
+    
+    def validate_post(self, value):
+        print("---------------------------", value)
+        if not Post.objects.filter(id=value.id).exists():
+            raise serializers.ValidationError("This post does not exist.")
+        return value
