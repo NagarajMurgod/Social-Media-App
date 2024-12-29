@@ -4,11 +4,12 @@ from rest_framework.generics import ListCreateAPIView,DestroyAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Post,Comment
+from .models import Post,Comment,PostLike
 import json
 from rest_framework.pagination import CursorPagination
 from .permissions import IsPostOwner
 from rest_framework import viewsets
+from django.db.models import Q, Max,Value, F
 
 
 class PostPagination(CursorPagination):
@@ -77,6 +78,56 @@ class ManagePostCommentsView(viewsets.ModelViewSet):
 
     
     def get_queryset(self):
-        post = Post.objects.get(pk=self.kwargs['post_id'])
-        return Comment.objects.filter(post=post)
+        post = Post.objects.filter(pk=self.kwargs['post_id']).first()
+        if post:
+            return Comment.objects.filter(post=post)
+        return Comment.objects.none() 
+
     
+class PostLikesDislikesView(APIView):
+    
+    def post(self, request, *args, **kwargs):
+        post_id = self.kwargs["post_id"]
+
+        post = Post.objects.filter(
+            (Q(user__followers__follower = request.user) | Q(user = request.user)),
+            id = post_id
+        ).first()
+
+        if post is None:
+            return Response({
+                "status" : "error",
+                "message" : "Post not found",
+                "payload" : {}
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        post_like = PostLike.objects.filter(post=post, user=request.user).first()
+
+        
+        if post_like is None:
+            PostLike.objects.create( post=post, user = request.user)
+            post.like_count = F("like_count") + 1
+            post.save()
+            is_liked = True
+        else:
+            post_like.delete()
+            if post.like_count > 0:
+                post.like_count = F("like_count") - 1
+            else:
+                post.like_count = 0
+
+            is_liked = False
+            post.save()
+
+        post.refresh_from_db() 
+        return Response({
+            "status" : "success",
+            "message" : "",
+            "payload" : {
+                "is_liked" : is_liked,
+                "like_count" : post.like_count
+            }
+        })
+        
+            
+        

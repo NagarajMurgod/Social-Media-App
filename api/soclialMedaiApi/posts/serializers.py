@@ -36,9 +36,16 @@ class UploadPostSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True)
+    comments_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Post 
-        fields = ["id","image", "caption", "like_count", "tags"]
+        fields = ["id","image", "caption", "like_count", "comments_count", "tags"]
+
+    
+    def get_comments_count(self, obj):
+        comment_count = Comment.objects.filter(post=obj).count()
+        return comment_count
 
 
 
@@ -51,7 +58,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     
     def validate_post(self, value):
-        print("---------------------------", value)
         if not Post.objects.filter(id=value.id).exists():
             raise serializers.ValidationError("This post does not exist.")
         return value
