@@ -21,6 +21,8 @@ class Profile(TimeStampedModel):
                 os.remove(path)
         
         return super().delete(*args,**kwargs)
+
+        
         
     
 

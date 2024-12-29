@@ -15,7 +15,7 @@ def image_path(instance, filename):
 def profile_image_path(instance, filename):
     user_id = instance.user.id 
     extension = filename.split('.')[-1]
-    random_str = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-    new_filename = f"{now().strftime('%Y%m%d%H%M%S')}_{random_str}.{extension}"
+    new_filename = f"{user_id}.{extension}"
     save_path = os.path.join('users', str(user_id), 'profile_images', new_filename)
     return save_path
+    

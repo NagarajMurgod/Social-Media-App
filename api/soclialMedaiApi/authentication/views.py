@@ -25,7 +25,7 @@ class SetCSRFToken(APIView):
         })
 
 
-@method_decorator(csrf_protect, name='dispatch')
+# @method_decorator(csrf_protect, name='dispatch')
 class SignupApiView(APIView):
     permission_classes = [AllowAny]
     serializer_class = CreateUserSerializer

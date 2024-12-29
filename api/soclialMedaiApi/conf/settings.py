@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'authentication',
     'common',
     'posts',
-    'users',
-    'rest_framework'
+    # 'users',
+    'rest_framework',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
