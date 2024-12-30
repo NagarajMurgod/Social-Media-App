@@ -27,7 +27,7 @@ class Post(TimeStampedModel):
     tags = models.ManyToManyField(Tag, through="PostTag",related_name="posts")
 
     def __str__(self):
-        return str(self.id)+" posted by "+str(self.user_id)
+        return str(self.id)+" posted by "+str(self.user.id)
     
 
     def delete(self,*args, **kwargs):

@@ -63,7 +63,7 @@ class SignupApiView(APIView):
         })
 
 
-@method_decorator(csrf_protect, name='dispatch')
+# @method_decorator(csrf_protect, name='dispatch')
 class LoginApiView(APIView):
     permission_classes=[AllowAny]
     serializer_class = LoginUserSerializer

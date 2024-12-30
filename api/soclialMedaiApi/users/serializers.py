@@ -1,21 +1,36 @@
 from rest_framework import serializers
-from .models import Profile
+from .models import Profile,Follow
 from authentication.models import User
+
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name"]
-        read_only = ["username"]
+        read_only_fields = ["username"]
 
 
 
 class GetProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=False)
+    user = UserSerializer(read_only=False,required=False)
+    followers = serializers.SerializerMethodField(read_only=True)
+    following = serializers.SerializerMethodField(read_only=True)
+
+
     class Meta:
         model = Profile 
-        fields = ["bio","profile_img","user"]
+        fields = ["bio","profile_img","user","followers","following"]
+        read_only_fields = ["followers", "following"]
+
+    
+    def get_followers(self, obj):
+        followers = obj.user.followers.count()
+        return  followers
+    
+    def get_following(self,obj):
+        followees = obj.user.followees.count()
+        return  followees
     
     def update(self,instance, validate_data):
         profile_img = validate_data.get("profile_img", None)

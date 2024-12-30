@@ -8,9 +8,11 @@ from .serializers import GetProfileSerializer
 from .models import Profile
 from .permissions import IsOwnerOfProfile
 from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveUpdateAPIView
+
 
 User = get_user_model()
-
 
 class FollowView(APIView):
 
@@ -55,7 +57,6 @@ class FollowView(APIView):
                 },status=status.HTTP_404_NOT_FOUND)
 
 
-
 class UnFollowView(APIView):
 
     def post(self, request, *args, **kwargs):
@@ -81,52 +82,9 @@ class UnFollowView(APIView):
         })
         
 
-
-class ProfileView(APIView):
-
-    permission_classes = [IsOwnerOfProfile]
+class ProfileView(RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated,IsOwnerOfProfile]
     parser_classes = [MultiPartParser]
-
-    def get_serializer_class(self):
-        return GetProfileSerializer
-
-
-    def patch(self, request, *args, **kwargs):
-        profile = Profile.objects.filter(user = self.request.user).first()
-
-        if not profile:
-            return Response({
-                "status" : "error",
-                "message" : "Profile not found",
-                "payload" : {}
-            },status=status.HTTP_404_NOT_FOUND)
-        
-        self.serializer_class = self.get_serializer_class()
-        serializer = self.serializer_class(profile, data=request.data,partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({
-            "status" : "success",
-            "message" : "successfully updated the profile",
-            "payload" : serializer.data
-        })
-
-
-    def get(self, request, *args, **kwargs):
-        self.serializer_class = self.get_serializer_class()
-        profile = Profile.objects.filter(user_id = kwargs["id"]).first()
-
-        if not profile:
-            return Response({
-                "status" : "error",
-                "message" : "user no found",
-                "payload" : {}
-            },status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = self.serializer_class(profile)
-        return Response({
-            "status" : "success",
-            "message" : "",
-            "payload" : serializer.data
-        })
+    serializer_class = GetProfileSerializer
+    queryset = Profile.objects.all()
+    lookup_field = 'user_id'

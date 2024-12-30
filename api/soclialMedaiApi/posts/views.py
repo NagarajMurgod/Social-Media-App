@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import UploadPostSerializer,PostSerializer,CommentSerializer
+from .serializers import PostSerializer,CommentSerializer
 from rest_framework.generics import ListCreateAPIView,DestroyAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
@@ -22,35 +22,31 @@ class CommentPagination(CursorPagination):
 
 
 class ListCreatePostView(ListCreateAPIView):
-    # serializer_class = UploadPostSerializer
+    serializer_class = PostSerializer
     parser_classes = [MultiPartParser]
     pagination_class = PostPagination
-
+    # lookup_field = 'user_id'
+    
     def get_queryset(self):
         posts = Post.objects.filter().prefetch_related("tags")
         return posts
 
+    def perform_create(self,serializer):
+        serializer.save(user=self.request.user)
 
-    def get_serializer_class(self):
-        if self.request and self.request.method == "POST":
-            return UploadPostSerializer
-        return PostSerializer
+    # def create(self, request, *args, **kwargs):
+    #     request_data = request.data
+    #     serializer = self.get_serializer(data=request_data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.validated_data['user'] = request.user
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-    def create(self, request, *args, **kwargs):
-        request_data = request.data
-        tags = request_data["tags"]
-        request_data["tags"] = json.loads(tags)
-        serializer = self.get_serializer(data=request_data)
-        serializer.is_valid(raise_exception=True)
-        serializer.validated_data['user'] = request.user
-        serializer.save()
-
-        return Response({
-            "status" : "success",
-            "message": "successfully uploaded the post",
-            "payload" : serializer.data
-        },status = status.HTTP_201_CREATED)
+    #     return Response({
+    #         "status" : "success",
+    #         "message": "successfully uploaded the post",
+    #         "payload" : serializer.data
+    #     },status = status.HTTP_201_CREATED)
     
 
 class DeletePostView(DestroyAPIView):
