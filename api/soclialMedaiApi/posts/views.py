@@ -7,6 +7,7 @@ from rest_framework import status
 from .models import Post,Comment,PostLike
 import json
 from rest_framework.pagination import CursorPagination
+from django.shortcuts import get_object_or_404
 from .permissions import IsPostOwner
 from rest_framework import viewsets
 from django.db.models import Q, Max,Value, F
@@ -15,6 +16,7 @@ from django.db.models import Q, Max,Value, F
 class PostPagination(CursorPagination):
     page_size = 2  # Number of posts to load per request
     ordering = '-created_at'  # Order by the latest posts
+
 
 class CommentPagination(CursorPagination):
     page_size = 2  # Number of posts to load per request
@@ -25,29 +27,20 @@ class ListCreatePostView(ListCreateAPIView):
     serializer_class = PostSerializer
     parser_classes = [MultiPartParser]
     pagination_class = PostPagination
-    # lookup_field = 'user_id'
     
     def get_queryset(self):
-        posts = Post.objects.filter().prefetch_related("tags")
-        return posts
+        
+        if self.kwargs.get('id'):
+            queryset = Post.objects.filter(user_id = self.kwargs.get('id')).prefetch_related("tags")
+        else:
+            queryset = Post.objects.all().prefetch_related("tags")
+        
+        return queryset
+
 
     def perform_create(self,serializer):
         serializer.save(user=self.request.user)
 
-    # def create(self, request, *args, **kwargs):
-    #     request_data = request.data
-    #     serializer = self.get_serializer(data=request_data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.validated_data['user'] = request.user
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    #     return Response({
-    #         "status" : "success",
-    #         "message": "successfully uploaded the post",
-    #         "payload" : serializer.data
-    #     },status = status.HTTP_201_CREATED)
-    
 
 class DeletePostView(DestroyAPIView):
     queryset = Post.objects.all()
@@ -59,22 +52,12 @@ class ManagePostCommentsView(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class = CommentPagination
 
-    def create(self, request, *args, **kwargs):
-        request.data["user"] = request.user.id
-        post = Post.objects.filter(pk = self.kwargs["post_id"]).first()
-        if post:
-            request.data["post"] = post.id
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response({
-                "status" : "Error",
-                "message" : "Post does not exists",
-                "payload" : {}
-            }, status=status.HTTP_404_NOT_FOUND)
-
+    def perform_create(self,serializer):
+        post = get_object_or_404(Post , pk = self.kwargs["post_id"])
+        serializer.save(post=post, user = self.request.user)
     
     def get_queryset(self):
-        post = Post.objects.filter(pk=self.kwargs['post_id']).first()
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         if post:
             return Comment.objects.filter(post=post)
         return Comment.objects.none() 

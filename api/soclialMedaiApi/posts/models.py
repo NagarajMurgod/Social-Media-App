@@ -60,7 +60,7 @@ class Comment(TimeStampedModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="comments")
     post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name="list_comments",null=True, blank=True)
     comment = models.ForeignKey('self', on_delete=models.CASCADE,related_name="replies", null=True,blank=True)
-    detail = models.TextField(default='')
+    detail = models.TextField(default='',max_length=1000)
 
 
 class PostTag(TimeStampedModel):

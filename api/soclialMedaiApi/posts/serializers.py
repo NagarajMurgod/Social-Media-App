@@ -43,13 +43,16 @@ class PostSerializer(serializers.ModelSerializer):
         return post_obj
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
-    
+    username = serializers.CharField(source="user.username")
+    profile_img = serializers.ImageField(source="user.profile.profile_img")
+
     class Meta:
         model = Comment
-        fields = ["id", "user", "post","detail"]
+        fields = ["id","user_id","username", "profile_img","post","detail",]
+        read_only_fields = ["user_id", "post","username","profile_img"]
     
-
     
     def validate_post(self, value):
         if not Post.objects.filter(id=value.id).exists():

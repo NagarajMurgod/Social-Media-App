@@ -3,7 +3,6 @@ from .models import Profile,Follow
 from authentication.models import User
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -11,6 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["username"]
 
 
+class GetUserList(serializers.ModelSerializer):
+    ...
 
 class GetProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=False,required=False)
