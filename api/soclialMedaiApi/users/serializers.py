@@ -11,7 +11,24 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class GetUserList(serializers.ModelSerializer):
-    ...
+    profile_img = serializers.ImageField(source="profile.profile_img")
+    is_following = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["id","username", "profile_img", "is_following"]
+    
+    def get_is_following(self,obj):
+        view = self.context.get("view")
+        request = self.context.get("request")
+        user_id = view.kwargs.get("user_id")
+        if not user_id:
+            user_id = request.user.id
+        return True
+        # return Follow.objects.filter(followee__id=user_id,follower=obj).exists()
+
+
+
 
 class GetProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=False,required=False)

@@ -4,15 +4,17 @@ from .models import Follow
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from .serializers import GetProfileSerializer
-from .models import Profile
+from .serializers import GetProfileSerializer,GetUserList
+from .models import Profile,Follow
 from .permissions import IsOwnerOfProfile
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView,ListAPIView
-
+from django.shortcuts import get_object_or_404
+from django.db.models import Prefetch
 
 User = get_user_model()
+
 
 class FollowView(APIView):
     def post(self, request, *args, **kwargs):
@@ -81,4 +83,19 @@ class ProfileView(RetrieveUpdateAPIView):
     lookup_field = 'user_id'
 
 
-# class GetUserList(Lis)
+class GetUserList(ListAPIView):
+    serializer_class = GetUserList
+    def get_queryset(self):
+        user_id = self.kwargs.get("user_id")
+        typ = self.request.query_params.get("type")
+       
+        if user_id:
+            user = get_object_or_404(User, id = user_id)
+            if typ == "followers":
+                return User.objects.filter(followees__followee = user).exclude(id=user.id)
+            elif typ == "following":
+                return user.followees.all()
+            else:
+                return Follow.objects.none()
+        return User.objects.prefetch_related(Prefetch("followers", queryset=Follow.objects.filter(followee=self.request.user))).exclude(id=self.request.user.id)
+        
