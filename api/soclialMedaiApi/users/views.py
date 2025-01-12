@@ -85,6 +85,7 @@ class ProfileView(RetrieveUpdateAPIView):
 
 class GetUserList(ListAPIView):
     serializer_class = GetUserList
+    
     def get_queryset(self):
         user_id = self.kwargs.get("user_id")
         typ = self.request.query_params.get("type")
@@ -92,10 +93,10 @@ class GetUserList(ListAPIView):
         if user_id:
             user = get_object_or_404(User, id = user_id)
             if typ == "followers":
-                return User.objects.filter(followees__followee = user).exclude(id=user.id)
+                return User.objects.filter(followees__followee = user).select_related("profile").exclude(id=user.id)
             elif typ == "following":
-                return user.followees.all()
+                return User.objects.filter(followers__follower = user).select_related("profile").exclude(id=user.id)
             else:
                 return Follow.objects.none()
-        return User.objects.prefetch_related(Prefetch("followers", queryset=Follow.objects.filter(followee=self.request.user))).exclude(id=self.request.user.id)
+        return User.objects.prefetch_related(Prefetch("followers", queryset=Follow.objects.filter(followee=self.request.user))).select_related("profile").exclude(id=self.request.user.id)
         

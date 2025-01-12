@@ -13,7 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
 class GetUserList(serializers.ModelSerializer):
     profile_img = serializers.ImageField(source="profile.profile_img")
     is_following = serializers.SerializerMethodField()
-
     class Meta:
         model = User
         fields = ["id","username", "profile_img", "is_following"]
@@ -22,6 +21,7 @@ class GetUserList(serializers.ModelSerializer):
         view = self.context.get("view")
         request = self.context.get("request")
         user_id = view.kwargs.get("user_id")
+        
         if not user_id:
             user_id = request.user.id
         return True
