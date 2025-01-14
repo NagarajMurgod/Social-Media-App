@@ -31,7 +31,7 @@ class ListCreatePostView(ListCreateAPIView):
     def get_queryset(self):
         
         if self.kwargs.get('id'):
-            queryset = Post.objects.filter(user_id = self.kwargs.get('id')).prefetch_related("tags")
+            queryset = Post.objects.filter(user_id = self.kwargs.get('id')).prefetch_related("tags","user","user__profile")
         else:
             queryset = Post.objects.all().prefetch_related("tags")
         
@@ -59,7 +59,7 @@ class ManagePostCommentsView(viewsets.ModelViewSet):
     def get_queryset(self):
         post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         if post:
-            return Comment.objects.filter(post=post)
+            return Comment.objects.filter(post=post).prefetch_related("user","user__profile")
         return Comment.objects.none() 
 
     

@@ -45,8 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user.username")
-    profile_img = serializers.ImageField(source="user.profile.profile_img")
+    username = serializers.CharField(source="user.username",required=False)
+    profile_img = serializers.ImageField(source="user.profile.profile_img",required=False)
 
     class Meta:
         model = Comment
