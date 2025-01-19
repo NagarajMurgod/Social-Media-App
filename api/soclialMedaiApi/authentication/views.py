@@ -81,7 +81,7 @@ class LoginApiView(APIView):
                 "payload" : {
                     "errors" : serializer.errors
                 }
-            })
+            },status=status.HTTP_400_BAD_REQUEST)
         
         username_or_email = serializer.validated_data.get("username_or_email")
         password = serializer.validated_data.get("password")
@@ -101,11 +101,11 @@ class LoginApiView(APIView):
                     "status": "error",
                     "message" : "Username or Password incorrect",
                     "payload" : {}
-                })
+                },status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response({
                 "status" : "error",
                 "message" : "User does not exists",
                 "payload" : {}
-            })
+            },status=status.HTTP_400_BAD_REQUEST)
 

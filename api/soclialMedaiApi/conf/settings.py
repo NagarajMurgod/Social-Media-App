@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # 'users',
     'rest_framework',
     'users.apps.UsersConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -155,4 +157,11 @@ INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = False 
+SESSION_COOKIE_SECURE = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # React frontend URL during development
 ]
