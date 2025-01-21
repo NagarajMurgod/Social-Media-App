@@ -40,6 +40,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    /* border: 1px solid red; */
 }
 
 .loginInput{
@@ -81,4 +82,10 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+}
+
+.field_error{
+  color: red;
+  margin: 2px;
+  
 }

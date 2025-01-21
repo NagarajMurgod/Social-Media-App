@@ -5,8 +5,13 @@ import PersonIcon from "@mui/icons-material/Person"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import { getImageUrl } from "../../utils";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+
 
 export default function Topbar() {
+  const { user } =  useContext(AuthContext);
+  console.log(user);
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -42,7 +47,8 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
-        <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/>
+        {/* <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/> */}
+        <img src={user ? import.meta.env.VITE_API_URL + user.payload.profile_img: getImageUrl("person/1.jpeg") } alt="" className="topbarImg"/>
       </div>
     </div>
   );

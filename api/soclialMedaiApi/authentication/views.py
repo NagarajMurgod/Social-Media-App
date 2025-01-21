@@ -87,14 +87,14 @@ class LoginApiView(APIView):
         password = serializer.validated_data.get("password")
 
         user = (User.objects.filter(email = username_or_email).first() or User.objects.filter(username = username_or_email).first())
-
         if user is not None:
             if check_password(password, user.password):
                 login(request, user)
+                serializer = self.serializer_class(user)
                 return Response({
                     "status" : "success",
                     "message" : "Login successful",
-                    "playload" : {}
+                    "payload" : serializer.data
                 })
             else:
                 return Response({

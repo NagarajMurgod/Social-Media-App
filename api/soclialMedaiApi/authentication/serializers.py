@@ -36,7 +36,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class LoginUserSerializer(serializers.ModelSerializer):
     username_or_email = serializers.CharField(write_only=True)
-
+    profile_img = serializers.ImageField(source='profile.profile_img',read_only=True)
     class Meta:
         model = User 
 
@@ -48,22 +48,20 @@ class LoginUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "date_joined",
-            "is_active",
-            "is_superuser"
+            "profile_img"
         ]
 
         read_only_fields = [
-            "email",
             "username",
             "first_name",
             "last_name",
             "date_joined",
-            "is_active",
-            "is_superuser"
+            "profile_img"
         ]
 
         extra_kwargs = {
-            "password" : { "write_only" : True}
+            "password" : { "write_only" : True},
+            "email" : {"write_only": True}
         }
 
         def validate_username_or_email(self,value):

@@ -3,6 +3,7 @@ import "./login.css";
 import { loginCall } from "../../apiCalls";
 import { AuthContext} from "../../context/AuthContext"
 import CircularProgress from '@mui/material/CircularProgress';
+import { CSRFToken } from "../../components/CSRF_token";
 
 export default function Login() {
 
@@ -30,6 +31,7 @@ export default function Login() {
         <div className="loginRight">
           
           <form className="loginBox" onSubmit={handleClick}>
+            <CSRFToken/>
             <h3 className="loginboxtitle">Log in to Facebook</h3>
             <input type="email" required placeholder="Email" className="loginInput" ref={email}/>
             <input type="password" required placeholder="Password" className="loginInput" ref={password} />

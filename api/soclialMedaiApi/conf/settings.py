@@ -160,8 +160,11 @@ INTERNAL_IPS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_SECURE = False 
-SESSION_COOKIE_SECURE = False
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React frontend URL during development
-]
+# CSRF_COOKIE_SECURE = False 
+# SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = None
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173"  # React frontend URL during development
+# ]
