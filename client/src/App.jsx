@@ -21,7 +21,7 @@ function App() {
           {/* <Route path="/" element={ user ? <Home/> : <Register/> } /> */}
           <Route path="/" element={ <Home/> } />
           <Route path="/register" element={ user ? <Navigate to="/" /> : <Register/>} />
-          <Route path="/profile" element={<Profile/>} />
+          <Route path="/profile/:user_id" element={<Profile/>} />
         </Routes>
       </Router>
     </>

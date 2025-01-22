@@ -8,15 +8,20 @@ import axios from "axios"
 axios.defaults.withCredentials = true;
 
 
-export default function Feed() {
+export default function Feed({user_id}) {
   
   const [posts, setPosts] = useState([]);
 
   useEffect(()=>{
     const fetchPosts = async () => {
-      const res = await axios.get(import.meta.env.VITE_API_URL + "/post/user_posts/");
+      if(user_id){
+        var url = import.meta.env.VITE_API_URL + "/post/user_posts/"+user_id+"/"
+      }
+      else{
+        var url = import.meta.env.VITE_API_URL + "/post/user_posts/"
+      }
+      const res = await axios.get(url);
       const data = res.data
-      console.log(data)
       setPosts(data)
     };
     fetchPosts();

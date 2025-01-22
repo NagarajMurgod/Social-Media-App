@@ -2,7 +2,18 @@ import { createContext, useReducer } from "react";
 import AuthReducer from "./AuthReducer";
 
 const INITIAL_STATE = {
-    user: null,
+    user: {
+        "status": "success",
+        "message": "Login successful",
+        "payload": {
+            "id": 1,
+            "username": "nagaraj",
+            "first_name": "Nagaraj12",
+            "last_name": "Murgod",
+            "date_joined": "2024-12-16T14:08:02.663920Z",
+            "profile_img": "/media/users/1/profile_images/1.png"
+        }
+    },
     isFetching: false,
     error : false
 };

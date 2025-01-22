@@ -41,6 +41,7 @@ class LoginUserSerializer(serializers.ModelSerializer):
         model = User 
 
         fields = [
+            "id",
             "username_or_email",
             "email",
             "password",
@@ -52,6 +53,7 @@ class LoginUserSerializer(serializers.ModelSerializer):
         ]
 
         read_only_fields = [
+            "id",
             "username",
             "first_name",
             "last_name",
