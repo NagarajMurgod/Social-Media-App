@@ -67,7 +67,6 @@ class PostLikesDislikesView(APIView):
     
     def post(self, request, *args, **kwargs):
         post_id = self.kwargs["post_id"]
-
         post = Post.objects.filter(
             (Q(user__followers__follower = request.user) | Q(user = request.user)),
             id = post_id

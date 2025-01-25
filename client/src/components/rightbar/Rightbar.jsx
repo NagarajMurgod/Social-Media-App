@@ -5,10 +5,7 @@ import { getImageUrl } from "../../utils";
 import { useRef } from "react";
 
 const Rightbar = ({ user }) => {
-  const rn = useRef(0);
 
-  rn.current = rn.current + 1;
-  console.log(rn.current);
 
   const HomeRightbar = () => {
     return (

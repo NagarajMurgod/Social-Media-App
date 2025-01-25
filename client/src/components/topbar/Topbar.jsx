@@ -50,7 +50,7 @@ const  Topbar = memo(() => {
         </div>
         {/* <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/> */}
         <Link to={`/profile/${user.payload.id}`}>
-          <img src={user ? import.meta.env.VITE_API_URL + user.payload.profile_img: getImageUrl("person/1.jpeg") } alt="" className="topbarImg"/>
+          <img src={import.meta.env.VITE_API_URL + user.payload.profile_img} alt="" className="topbarImg"/>
         </Link>
       </div>
     </div>

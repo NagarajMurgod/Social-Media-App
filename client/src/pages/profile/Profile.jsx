@@ -4,26 +4,33 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
 import { getImageUrl } from "../../utils";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 
 
-export default function Profile() {
+const Profile = () => {
 
   const [user, setUser] = useState({});
   const userId = useParams().user_id
 
+  const rn = useRef(0);
+
+  rn.current = rn.current + 1;
+  console.log(rn.current);
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(import.meta.env.VITE_API_URL + "/user/profile/"+userId+"/")
-      
-      setUser(res.data)
+      if(JSON.stringify(res.data) !== JSON.stringify(user)){
+        setUser(res.data)
+      }
     }
     fetchUser()
   },[]);
+
 
   return (
     <>
@@ -45,8 +52,8 @@ export default function Profile() {
               />
             </div>
             <div className="profileInfo">
-                <h4 className="profileInfoName">{user.user ? user.user.username: ""}</h4>
-                <span className="profileInfoDesc">{user ? user.bio : ""}</span>
+                <h4 className="profileInfoName">{user.user ? user.user.username : ""}</h4>
+                <span className="profileInfoDesc">{user.user ? user.bio : ""}</span>
             </div>
           </div>
           <div className="profileRightBottom">
@@ -57,4 +64,6 @@ export default function Profile() {
       </div>
     </>
   );
-}
+};
+
+export default memo(Profile);
