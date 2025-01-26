@@ -7,6 +7,7 @@ import { getImageUrl } from "../../utils";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import CancelIcon from '@mui/icons-material/Cancel';
 // import { AuthContext } from "../../context/AuthContext";
 
 export default function Share() {
@@ -33,17 +34,18 @@ export default function Share() {
     if(file){
       const data = new FormData();
       const fileName = Date.now() + file.name;
-      data.append("name", fileName);
+      // data.append("name", fileName);
       data.append("image", file);
       data.append("caption", desc.current.value)
       newPost.image = fileName;
-      
       try{
-        await axios.post(PF+"/post/upload/",{data: null}, { headers : {"X-CSRFToken" : getCSRFToken()} });
+        await axios.post(PF+"/post/upload/",data, { headers : {"X-CSRFToken" : getCSRFToken()} });
+        window.location.reload();
       }
       catch(err){
         console.log(err);
       }
+      
       
     }
   }
@@ -60,6 +62,11 @@ export default function Share() {
           />
         </div>
         <hr className="shareHr"/>
+        {file && (
+          <div className="shareImgContainer"> 
+            <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+          </div>
+        )}
         <form className="shareBottom" onSubmit={submitHandler}>
             <div className="shareOptions">
                 <label htmlFor="file" className="shareOption">
@@ -80,7 +87,12 @@ export default function Share() {
                     <span className="shareOptionText">Feelings</span>
                 </div>
             </div>
-            <button type="submit" className="shareButton">Share</button>
+
+            <div className="submitCancleWrapp">
+              
+              {file ? <CancelIcon style={{fontSize : "32px"}}  className="shareCancelImg" onClick={()=>setFile(null)}></CancelIcon> : ""}
+              <button type="submit" className="shareButton">Share</button>
+            </div>
         </form>
       </div>
     </div>
