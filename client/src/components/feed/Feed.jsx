@@ -14,55 +14,64 @@ const Feed = ({user_id}) => {
   
   const [posts, setPosts] = useState([]);
   const [nextData, setNextData] = useState(user_id ? PF+"/post/user_posts/"+user_id+"/" : PF+"/post/user_posts/");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const loadingRef = useRef(null);
   
 
-
   const fetchPosts = async () => {
-    setIsLoading(true);
+    if (loading) return; 
+    setLoading(true);
     try{
       const res = await axios.get(nextData);
       const data = await res.data
       if(data.results){
         setPosts(prevItems => [...prevItems, ...data.results]);
       }
-      setNextData( prev_url => (data.next && prev_url !== data.next) ? data.next : null);
-      
+      setNextData(data.next ? data.next : null);
     }
     catch(err){}
     finally{
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handelInfiniteScroll = async () => {
-    try {
-      if (window.innerHeight + document.documentElement.scrollTop + 0.3 >= document.documentElement.scrollHeight) 
-      {
-        if(nextData){
-          fetchPosts();
-        }
-        else{ return }
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
-    window.addEventListener("scroll", handelInfiniteScroll);
-    return () => window.removeEventListener("scroll", handelInfiniteScroll);
-  }, [isLoading]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+
+        if (entries[0].isIntersecting) {
+          fetchPosts()
+        }
+      },
+      {
+        threshold: 1
+      }
+    );
+
+    if (loadingRef.current) {
+      observer.observe(loadingRef.current);
+    }
+    return () => {
+      if (loadingRef.current) {
+        observer.unobserve(loadingRef.current);
+      }
+    };
+  }, [loading, nextData]);
+
+
 
 
   return (
     <div className="feed">
       <div className="feedWrapper">
         <Share />
-        { posts ? posts.map((p) => (
+
+        {posts.map((p) => (
           <Post key={p.id} post={p} />
-        )): <p>Loading...</p>}
+        ))}
+        {nextData ? <p ref={loadingRef}>Loading...</p>:""}
+    
       </div>
     </div>
   );
