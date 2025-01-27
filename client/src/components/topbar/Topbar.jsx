@@ -7,7 +7,31 @@ import { getImageUrl } from "../../utils";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { memo, useContext, useRef } from "react";
+import LogoutIcon from '@mui/icons-material/Logout';
+import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
+
+const getCSRFToken = () => {
+  const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='));  // Replace 'csrf_token' with your actual cookie name
+  return csrfToken ? csrfToken.split('=')[1] : null;
+};
+
+
+const logoutUser = async () => {
+  const pf = import.meta.env.VITE_API_URL
+  try{
+    await axios.post(pf+"/auth/logout/",{data: null}, { headers : {"X-CSRFToken" : getCSRFToken()}});
+    sessionStorage.clear();
+    localStorage.clear();
+    document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;;
+    window.location.href = '/login/'
+  }
+  catch{}
+}
 
 const  Topbar = memo(() => {
   const { user } =  useContext(AuthContext);
@@ -49,9 +73,13 @@ const  Topbar = memo(() => {
           </div>
         </div>
         {/* <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/> */}
-        <Link to={`/profile/${user.payload.id}`}>
-          <img src={import.meta.env.VITE_API_URL + user.payload.profile_img} alt="" className="topbarImg"/>
-        </Link>
+
+        <div className="profilelogoutwrapper">
+          <button onClick={logoutUser} className="logoutBtn"><LogoutIcon></LogoutIcon></button>
+          <Link to={`/profile/${user.payload.id}`}>
+            <img src={import.meta.env.VITE_API_URL + user.payload.profile_img} alt="" className="topbarImg"/>
+          </Link>
+        </div>
       </div>
     </div>
   );

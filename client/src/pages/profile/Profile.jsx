@@ -47,7 +47,7 @@ const Profile = () => {
               />
               <img
                 className="profileUserImg"
-                src={user ? user.profile_img : getImageUrl("post/7.jpeg")}
+                src={user.profile_img}
                 alt=""
               />
             </div>

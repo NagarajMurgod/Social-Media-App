@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from .serializers import CreateUserSerializer,LoginUserSerializer
 from rest_framework import status
@@ -9,6 +9,7 @@ from common.helpers import validation_error_handler
 from django.contrib.auth.hashers import check_password
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
+from django.contrib.auth import logout
 # Create your views here.
 
 User = get_user_model()
@@ -108,4 +109,13 @@ class LoginApiView(APIView):
                 "message" : "User does not exists",
                 "payload" : {}
             },status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class LogoutApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Logged out successfully"},status=status.HTTP_200_OK)
 

@@ -4,6 +4,9 @@ import "./feed.css";
 import { Posts } from "../../dummyData";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios"
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+
 axios.defaults.withCredentials = true;
 
 
@@ -16,7 +19,7 @@ const Feed = ({user_id}) => {
   const [nextData, setNextData] = useState(user_id ? PF+"/post/user_posts/"+user_id+"/" : PF+"/post/user_posts/");
   const [loading, setLoading] = useState(false);
   const loadingRef = useRef(null);
-  
+  const user = useContext(AuthContext)
 
   const fetchPosts = async () => {
     if (loading) return; 
@@ -59,13 +62,11 @@ const Feed = ({user_id}) => {
     };
   }, [loading, nextData]);
 
-
-
-
   return (
     <div className="feed">
       <div className="feedWrapper">
-        <Share />
+        
+        {((user.user.payload.id == user_id) || !user_id) ? <Share /> : ""}
 
         {posts.map((p) => (
           <Post key={p.id} post={p} />

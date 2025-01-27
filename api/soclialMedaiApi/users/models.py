@@ -9,7 +9,7 @@ User = get_user_model()
 class Profile(TimeStampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     bio = models.CharField(max_length=255,blank=True, null=True)
-    profile_img = models.ImageField(upload_to=profile_image_path,default='blank-profile.png')
+    profile_img = models.ImageField(upload_to=profile_image_path,default='/users/empty.png')
 
     def __str__(self):        
         return str(self.user_id) + "-profile"

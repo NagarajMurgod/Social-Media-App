@@ -94,3 +94,22 @@
   object-fit: cover;
   cursor: pointer;
 }
+
+
+
+.profilelogoutwrapper{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logoutBtn{
+
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+
+}
