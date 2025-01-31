@@ -11,8 +11,23 @@ import SchoolIcon from "@mui/icons-material/School"
 
 import { Users } from "../../dummyData";
 import CloseFriend from "../closeFriend/CloseFriend";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Sidebar() {
+  const PF = import.meta.env.VITE_API_URL
+  const [userList, setUserList] = useState([])
+
+  const getUserList = async (url) => {
+    const res = await axios.get(url)
+    const data = await res.data
+    setUserList(data);
+  }
+
+  useEffect(()=>{
+    getUserList(PF+"/user/list/")
+  },[])
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -57,7 +72,7 @@ export default function Sidebar() {
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
+          {userList.map((u) => (
             <CloseFriend key={u.id} user={u} />
           ))}
         </ul>

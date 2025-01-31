@@ -78,8 +78,18 @@ const Rightbar = ({ user, user_id }) => {
           </div>
         </div>
         <div className="rightbarTitle">
-          <button disabled = {follow} onClick={() => getFollowers("followers")} style={{borderBottom: follow ? "1px solid black" : "0px"}}>Followers</button>
-          <button disabled = {!follow} onClick={() => getFollowers("following")} style={{borderBottom: !follow ? "1px solid black" : "0px"}} >Following</button>
+          <button disabled = {follow} 
+                  onClick={() => getFollowers("followers")} 
+                  style={{borderBottom: follow ? "1px solid black" : "0px"}}>
+                  Followers
+            </button>
+
+          <button disabled = {!follow} 
+                  onClick={() => getFollowers("following")} 
+                  style={{borderBottom: !follow ? "1px solid black" : "0px"}} >
+                  Following
+          </button>
+          
         </div>
         <div className="rightbarFollowings"> 
           {followers.map((friend) => (
