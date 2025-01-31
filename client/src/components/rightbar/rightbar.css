@@ -41,8 +41,20 @@
 .rightbarTitle{
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+
 }
+
+.rightbar button{
+  /* padding: 0 1px; */
+  font-size: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 
 .rightbarInfo{
   margin-bottom: 30px;

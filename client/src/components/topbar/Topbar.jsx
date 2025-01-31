@@ -75,7 +75,7 @@ const  Topbar = memo(() => {
         {/* <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/> */}
 
         <div className="profilelogoutwrapper">
-          <button onClick={logoutUser} className="logoutBtn"><LogoutIcon></LogoutIcon></button>
+          <button onClick={logoutUser} className="logoutBtn"><span title="logout"><LogoutIcon/></span></button>
           <Link to={`/profile/${user.payload.id}`}>
             <img src={import.meta.env.VITE_API_URL + user.payload.profile_img} alt="" className="topbarImg"/>
           </Link>

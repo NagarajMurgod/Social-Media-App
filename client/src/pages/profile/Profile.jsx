@@ -58,7 +58,7 @@ const Profile = () => {
           </div>
           <div className="profileRightBottom">
             <Feed user_id={userId} />
-            { user.user ? <Rightbar user = {user}/> : "loading.." }
+            { user.user ? <Rightbar user = {user} user_id={userId}/> : "loading.." }
           </div>
         </div>
       </div>

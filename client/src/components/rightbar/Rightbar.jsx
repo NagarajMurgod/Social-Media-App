@@ -2,10 +2,18 @@ import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
 import { getImageUrl } from "../../utils";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
-const Rightbar = ({ user }) => {
 
+axios.defaults.withCredentials = true;
+
+
+const Rightbar = ({ user, user_id }) => {
+
+  const [follow, setFollow] = useState(true)
+  const [followers, setFollowers] = useState([])
+  const PF = import.meta.env.VITE_API_URL
 
   const HomeRightbar = () => {
     return (
@@ -27,7 +35,27 @@ const Rightbar = ({ user }) => {
     );
   };
 
+
+  const getUsers = async (rel) => {
+   
+    const res = await axios.get(PF+`/user/profile/${user_id}/relations/?type=${rel}`)
+    // console.log(res.data);
+    const data = await res.data
+    setFollowers(data);
+
+  }
+
+  useEffect(()=>{
+    getUsers("followers");
+  },[])
+
+  const getFollowers = async (rel) => {
+    setFollow(prev => !prev);
+    getUsers(rel)
+  }
+  
   const ProfileRightbar = () => {
+
     return (
       <>
         <h4 className="rightbarTitle">User information</h4>
@@ -49,56 +77,23 @@ const Rightbar = ({ user }) => {
             <span className="rightbarInfoValue">{user.following}</span>
           </div>
         </div>
-        <h4 className="rightbarTitle">User friends</h4>
-        <div className="rightbarFollowings">
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/1.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
+        <div className="rightbarTitle">
+          <button disabled = {follow} onClick={() => getFollowers("followers")} style={{borderBottom: follow ? "1px solid black" : "0px"}}>Followers</button>
+          <button disabled = {!follow} onClick={() => getFollowers("following")} style={{borderBottom: !follow ? "1px solid black" : "0px"}} >Following</button>
+        </div>
+        <div className="rightbarFollowings"> 
+          {followers.map((friend) => (
+            <div key={friend.id} className="rightbarFollowing">
+              <img
+                // src={getImageUrl("person/1.jpeg")}
+                src={friend.profile_img}
+                alt=""
+                className="rightbarFollowingImg"
+              />
+            <span className="rightbarFollowingName">{friend.username}</span>
           </div>
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/2.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/3.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/4.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/5.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={getImageUrl("person/6.jpeg")}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
+          ))}
+
         </div>
       </>
     );
