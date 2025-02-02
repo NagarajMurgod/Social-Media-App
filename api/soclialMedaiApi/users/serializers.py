@@ -24,8 +24,8 @@ class GetUserList(serializers.ModelSerializer):
         
         if not user_id:
             user_id = request.user.id
-        return True
-        # return Follow.objects.filter(followee__id=user_id,follower=obj).exists()
+        # return True
+        return Follow.objects.filter(followee__id=user_id,follower=obj).exists()
 
 
 
@@ -34,11 +34,11 @@ class GetProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=False,required=False)
     followers = serializers.SerializerMethodField(read_only=True)
     following = serializers.SerializerMethodField(read_only=True)
-
+    is_following = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile 
-        fields = ["bio","profile_img","user","followers","following"]
+        fields = ["bio","profile_img","user","followers","following", "is_following"]
         read_only_fields = ["followers", "following"]
 
     
@@ -49,6 +49,15 @@ class GetProfileSerializer(serializers.ModelSerializer):
     def get_following(self,obj):
         followees = obj.user.followees.count()
         return  followees
+    
+    def get_is_following(self,obj):
+        # view = self.context.get("view")
+        request = self.context.get("request")
+        # user_id = view.kwargs.get("user_id")
+        # return True
+        return Follow.objects.filter(followee__id=obj.user.id,follower__id=request.user.id).exists()
+        # return Follow.objects.filter(followee__id=user_id,follower=obj).exists()
+
     
     def update(self,instance, validate_data):
         profile_img = validate_data.get("profile_img", None)

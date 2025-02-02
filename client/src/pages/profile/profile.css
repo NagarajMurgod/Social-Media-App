@@ -2,6 +2,9 @@
     display: flex;
 }
 
+.profile_wrapper{
+    position: relative;
+}
 .profileRight{
     flex: 9;
 }

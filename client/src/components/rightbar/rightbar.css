@@ -47,7 +47,34 @@
 
 }
 
-.rightbar button{
+.FollowBtn{
+  background-color: #1877f2;
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  margin: 15px 0;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  
+}
+
+.UnFollowBtn{
+  background-color: #e2e0e0;
+  border: none;
+  /* color: white; */
+  padding: 8px 20px;
+  border-radius: 5px;
+  margin: 15px 0;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+
+  
+}
+
+.rightbarTitle button{
   /* padding: 0 1px; */
   font-size: 18px;
   background: transparent;
@@ -94,3 +121,4 @@
   object-fit: cover;
   border-radius: 5px;
 }
+

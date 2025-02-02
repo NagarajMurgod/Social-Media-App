@@ -1,0 +1,68 @@
+
+
+.popup{
+    position: fixed;
+    background-color: rgba(19, 19, 19, 0.322);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.innerBox{
+    width: 400px;
+    height: 218px;
+    background-color: rgb(248, 248, 248);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.innerBox input{
+    display: none;
+}
+
+.innerBox label{
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+}
+.innerBox span{
+    cursor: pointer;
+    color: rgb(43, 127, 223);
+    font-weight: 600;
+}
+.innerBox button{
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+}
+.innerBox h2{
+    /* border-bottom: 1px solid rgb(58, 58, 58); */
+    /* padding-bottom: 10px; */
+    color: rgb(65, 65, 65);
+    margin-bottom: 10px;
+}
+
+.removeImg{
+    font-weight: 600;
+    color: rgb(252, 32, 32);
+}
+
+.innerBox hr{
+    width: 100%;
+    /* height: 20px; */
+    border-top: none;
+    border-bottom: 0.5px solid rgb(168, 168, 168);
+}

@@ -2,18 +2,26 @@ import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
 import { getImageUrl } from "../../utils";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 
 axios.defaults.withCredentials = true;
 
 
-const Rightbar = ({ user, user_id }) => {
+const Rightbar = ({ user1, user_id }) => {
 
   const [follow, setFollow] = useState(true)
   const [followers, setFollowers] = useState([])
   const PF = import.meta.env.VITE_API_URL
+
+  const { user } = useContext(AuthContext);
+
+
+  const [isFollowng, setIsFollowing] = useState(user1.is_following);
+
+  // console.log(user1);
 
   const HomeRightbar = () => {
     return (
@@ -37,11 +45,13 @@ const Rightbar = ({ user, user_id }) => {
 
 
   const getUsers = async (rel) => {
-   
-    const res = await axios.get(PF+`/user/profile/${user_id}/relations/?type=${rel}`)
-    // console.log(res.data);
-    const data = await res.data
-    setFollowers(data);
+    
+    if(user_id){
+      const res = await axios.get(PF+`/user/profile/${user_id}/relations/?type=${rel}`)
+      // console.log(res.data);
+      const data = await res.data
+      setFollowers(data);
+    }
 
   }
 
@@ -53,28 +63,30 @@ const Rightbar = ({ user, user_id }) => {
     setFollow(prev => !prev);
     getUsers(rel)
   }
+
   
   const ProfileRightbar = () => {
 
     return (
       <>
+        {user.payload.id != user_id ? <button className={isFollowng ? "UnFollowBtn" :"FollowBtn"}>{isFollowng ? "Following" : "Follow"}</button> : ""}
         <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">First Name: </span>
-            <span className="rightbarInfoValue">{user.user.first_name }</span>
+            <span className="rightbarInfoValue">{user1.user.first_name }</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Last Name:</span>
-            <span className="rightbarInfoValue">{ user.user.last_name}</span>
+            <span className="rightbarInfoValue">{ user1.user.last_name}</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Followers:</span>
-            <span className="rightbarInfoValue">{user.followers}</span>
+            <span className="rightbarInfoValue">{user1.followers}</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Following:</span>
-            <span className="rightbarInfoValue">{user.following}</span>
+            <span className="rightbarInfoValue">{user1.following}</span>
           </div>
         </div>
         <div className="rightbarTitle">
@@ -111,7 +123,7 @@ const Rightbar = ({ user, user_id }) => {
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
-        {user ? <ProfileRightbar /> : <HomeRightbar />}
+        {user_id ? <ProfileRightbar /> : <HomeRightbar />}
       </div>
     </div>
   );

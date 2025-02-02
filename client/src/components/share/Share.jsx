@@ -10,7 +10,7 @@ import axios from "axios";
 import CancelIcon from '@mui/icons-material/Cancel';
 // import { AuthContext } from "../../context/AuthContext";
 
-export default function Share() {
+export default function Share({profile_img}) {
   
   const {user}= useContext(AuthContext);
   const [file, setFile] = useState(null);
@@ -46,7 +46,6 @@ export default function Share() {
         console.log(err);
       }
       
-      
     }
   }
 
@@ -54,7 +53,7 @@ export default function Share() {
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          <img className="shareProfileImg" src={PF + user.payload.profile_img} alt="" />
+          <img className="shareProfileImg" src={ profile_img || PF + user.payload.profile_img} alt="" />
           <input
             placeholder="What's in your mind Safak?"
             className="shareInput"

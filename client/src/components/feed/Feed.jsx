@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 
 
 
-const Feed = ({user_id}) => {
+const Feed = ({user_id, profile_img}) => {
 
   const PF = import.meta.env.VITE_API_URL
   
@@ -66,10 +66,10 @@ const Feed = ({user_id}) => {
     <div className="feed">
       <div className="feedWrapper">
         
-        {((user.user.payload.id == user_id) || !user_id) ? <Share /> : ""}
+        {((user.user.payload.id == user_id) || !user_id) ? <Share profile_img = {profile_img} /> : ""}
 
         {posts.map((p) => (
-          <Post key={p.id} post={p} />
+          <Post key={p.id} post={p}/>
         ))}
         {nextData ? <p ref={loadingRef}>Loading...</p>:""}
     
