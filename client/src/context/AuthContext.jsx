@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import AuthReducer from "./AuthReducer";
 
 
-const storedUser = localStorage.getItem('user');
+let storedUser = localStorage.getItem('user');
 
 const INITIAL_STATE = {
     user: JSON.parse(storedUser),

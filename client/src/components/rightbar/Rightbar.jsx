@@ -5,7 +5,7 @@ import { getImageUrl } from "../../utils";
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
-
+import { getCSRFToken } from "../../utils";
 
 axios.defaults.withCredentials = true;
 
@@ -17,11 +17,9 @@ const Rightbar = ({ user1, user_id }) => {
   const PF = import.meta.env.VITE_API_URL
 
   const { user } = useContext(AuthContext);
+  const [isFollowng, setIsFollowing] = useState( user1 ? user1.is_following : false);
 
-
-  const [isFollowng, setIsFollowing] = useState(user1.is_following);
-
-  // console.log(user1);
+  
 
   const HomeRightbar = () => {
     return (
@@ -51,6 +49,7 @@ const Rightbar = ({ user1, user_id }) => {
       // console.log(res.data);
       const data = await res.data
       setFollowers(data);
+      
     }
 
   }
@@ -64,12 +63,22 @@ const Rightbar = ({ user1, user_id }) => {
     getUsers(rel)
   }
 
+  const FollowUnfollow = async () => {
+    let url = PF + "/user/profile/follow/"+user_id+"/"
+    if(isFollowng){
+      url = PF + "/user/profile/unfollow/"+user_id+"/"
+    }
+    const res = await axios.post(url, {data: null}, { headers : {"X-CSRFToken" : getCSRFToken()} })
+    setIsFollowing(res.data.payload.following);
+    console.log(res.data.payload);
+  }
+
   
   const ProfileRightbar = () => {
 
     return (
       <>
-        {user.payload.id != user_id ? <button className={isFollowng ? "UnFollowBtn" :"FollowBtn"}>{isFollowng ? "Following" : "Follow"}</button> : ""}
+        {user.payload.id != user_id ? <button onClick={FollowUnfollow} className={isFollowng ? "UnFollowBtn" :"FollowBtn"}>{isFollowng ? "Following" : "Follow"}</button> : ""}
         <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">

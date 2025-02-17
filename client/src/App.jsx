@@ -13,6 +13,7 @@ import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const {user} = useContext(AuthContext)
+  console.log(user);
   return (
     <>
       <Router>
@@ -21,7 +22,7 @@ function App() {
           {/* <Route path="/" element={ user ? <Home/> : <Register/> } /> */}
           <Route path="/" element={ user ? <Home/> : <Login/> } />
           <Route path="/register" element={ user ? <Navigate to="/" /> : <Register/>} />
-          <Route path="/profile/:user_id" element={<Profile/>} />
+          <Route path="/profile/:user_id" element={ user ? <Profile/> : <Navigate to="/" />} />
         </Routes>
       </Router>
     </>
