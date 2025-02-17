@@ -11,10 +11,9 @@ export default function Login() {
   const password = useRef();
   const {isFetching, error, dispatch} = useContext(AuthContext)
 
-
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault()
-    loginCall({username_or_email: email.current.value, password: password.current.value}, dispatch);
+    await loginCall({username_or_email: email.current.value, password: password.current.value}, dispatch);
     
   }
 
@@ -33,6 +32,7 @@ export default function Login() {
           <form className="loginBox" onSubmit={handleClick}>
             <CSRFToken/>
             <h3 className="loginboxtitle">Log in to Facebook</h3>
+            <div style={{color: "red"}}>{error ? error.response.data.message : ""}</div>
             <input type="email" required placeholder="Email" className="loginInput" ref={email}/>
             <input type="password" required placeholder="Password" className="loginInput" ref={password} />
             <button className="loginButton" disabled = {isFetching}>{isFetching ? <CircularProgress color="white" size="20px"  /> : "Login In"}</button>
