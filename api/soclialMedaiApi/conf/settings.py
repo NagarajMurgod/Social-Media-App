@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     # 'users',
     'rest_framework',
     'users.apps.UsersConfig',
-    'corsheaders'
+    'corsheaders',
+    "notifications.apps.NotificationsConfig"
 ]
 
 MIDDLEWARE = [

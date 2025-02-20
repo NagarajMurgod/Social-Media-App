@@ -28,8 +28,9 @@ class FollowView(APIView):
             },status=status.HTTP_400_BAD_REQUEST)
         
         if not Follow.objects.filter(follower=request.user, followee_id = followee_id).exists():
+        
             followee = User.objects.filter(id = followee_id).first()
-            if followee:
+            if followee: 
                 Follow.objects.create(
                     followee=followee,
                     follower=request.user
