@@ -15,4 +15,3 @@ class ListNotificationView(ListAPIView):
     lookup_field = 'id'
     queryset = FollowNotification.objects.all()
     
-

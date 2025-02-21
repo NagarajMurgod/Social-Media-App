@@ -6,11 +6,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications"
 import { getImageUrl } from "../../utils";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { memo, useContext, useRef } from "react";
+import { memo, useContext, useEffect, useRef, useState } from "react";
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+
+
 
 
 const getCSRFToken = () => {
@@ -27,15 +29,43 @@ const logoutUser = async () => {
     await axios.post(pf+"/auth/logout/",{data: null}, { headers : {"X-CSRFToken" : getCSRFToken()}});
     sessionStorage.clear();
     localStorage.clear();
-    document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;;
+    document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     window.location.href = '/login/'
   }
   catch{}
 }
 
+
+const NotifyDispaly = ({array}) => {
+  return (
+    <div className="notifycontainer">
+      {array && array.map((itm) => (
+        <p>{itm.message}</p>
+      ))}
+    </div>
+  )
+}
+
+
 const  Topbar = memo(() => {
   const { user } =  useContext(AuthContext);
   const rno = useRef(0);
+  const [notificationCnt, setNotificationCnt] = useState(0)
+  const [notificationList, setNotificationList] = useState([]);
+  const notifications = async () => {
+    const pf = import.meta.env.VITE_API_URL+"/notifications/"+user.payload.id+"/"
+    try{
+      const res = await axios.get(pf);
+      setNotificationCnt(res.data.count);
+      setNotificationList((prev) => [...prev, ...res.data.results]);
+    }
+    catch{}
+  }
+
+  useEffect(()=>{
+    notifications();
+  },[])
+
 
   return (
     <div className="topbarContainer">
@@ -61,17 +91,19 @@ const  Topbar = memo(() => {
         <div className="topbarIcons">
           <div className="topbarIconItem">
             <PersonIcon />
-            <span className="topbarIconBadge">1</span>
+            {/* <span className="topbarIconBadge"></span> */}
           </div>
           <div className="topbarIconItem">
             <ChatIcon />
-            <span className="topbarIconBadge">2</span>
+            {/* <span className="topbarIconBadge"></span> */}
           </div>
           <div className="topbarIconItem">
             <NotificationsIcon />
-            <span className="topbarIconBadge">1</span>
+            <span className="topbarIconBadge">{ notificationCnt }</span>
+            <NotifyDispaly array={notificationList}/>
           </div>
         </div>
+        
         {/* <img src={getImageUrl("person/1.jpeg")} alt="" className="topbarImg"/> */}
 
         <div className="profilelogoutwrapper">

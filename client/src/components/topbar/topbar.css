@@ -113,3 +113,13 @@
   cursor: pointer;
 
 }
+
+
+.notifycontainer{
+  position: absolute;
+  border: 1px solid red;
+  width: 300px;
+  height: 150px;
+  background-color: rgb(238, 238, 238);
+  color: black;
+}
