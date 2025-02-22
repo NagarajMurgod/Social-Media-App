@@ -4,12 +4,16 @@ from notifications.models import FollowNotification
 
 class NotificationSerializer(serializers.ModelSerializer):
     is_read = serializers.BooleanField(read_only=False)
-    count = serializers.SerializerMethodField()
     class Meta:
         model = FollowNotification
-        fields = ["id","message","is_read","created_at","count"]
-        read_only_fields = ["id", "message","created_at","count"]
+        fields = ["id","message","is_read","created_at"]
+        read_only_fields = ["id", "message","created_at"]
     
-    def get_count(self, obj):
-        user = self.context["request"].user
-        return FollowNotification.objects.filter(user=user).count()
+    # def to_representation(self,instance):
+    #     representation = super().to_representation(instance)
+    #     user = self.context["request"].user
+    #     cnt =  FollowNotification.objects.filter(user=user).count()
+    #     representation["read_count"] = cnt
+    #     return representation
+
+        

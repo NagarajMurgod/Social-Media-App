@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { memo, useContext, useEffect, useRef, useState } from "react";
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from "axios";
+// import { getCSRFToken } from "../../utils";
 
 axios.defaults.withCredentials = true;
 
@@ -35,12 +36,23 @@ const logoutUser = async () => {
   catch{}
 }
 
+const GetMessage = ({message}) => {
+  const splitMessage = message.split(',');
+  const username = splitMessage[0]
+  const remaining = splitMessage[1]
+  return (
+    <p className="notifymsg"><span style={{fontWeight: "bold"}}>{username}</span> {remaining}</p>
+  )
+}
 
 const NotifyDispaly = ({array}) => {
   return (
     <div className="notifycontainer">
       {array && array.map((itm) => (
-        <p>{itm.message}</p>
+        <div key={itm.id} className="notifyText">
+          <NotificationsIcon/> <GetMessage message={itm.message}/>
+        </div>
+        
       ))}
     </div>
   )
@@ -52,11 +64,14 @@ const  Topbar = memo(() => {
   const rno = useRef(0);
   const [notificationCnt, setNotificationCnt] = useState(0)
   const [notificationList, setNotificationList] = useState([]);
+  const [displayNotification, setDisplayNotification] = useState(false);
+
   const notifications = async () => {
     const pf = import.meta.env.VITE_API_URL+"/notifications/"+user.payload.id+"/"
     try{
       const res = await axios.get(pf);
-      setNotificationCnt(res.data.count);
+      console.log(res.data);
+      setNotificationCnt(res.data.read_count);
       setNotificationList((prev) => [...prev, ...res.data.results]);
     }
     catch{}
@@ -66,6 +81,16 @@ const  Topbar = memo(() => {
     notifications();
   },[])
 
+
+  const clearNotification = async () => {
+    try{
+      const pf = import.meta.env.VITE_API_URL+"/notifications/clear/"
+      await axios.put(pf, {data: null}, { headers : {"X-CSRFToken" : getCSRFToken()}})
+      setDisplayNotification((prev)=>!prev)
+      setNotificationCnt(0)
+
+    }catch{}
+  }
 
   return (
     <div className="topbarContainer">
@@ -98,9 +123,9 @@ const  Topbar = memo(() => {
             {/* <span className="topbarIconBadge"></span> */}
           </div>
           <div className="topbarIconItem">
-            <NotificationsIcon />
-            <span className="topbarIconBadge">{ notificationCnt }</span>
-            <NotifyDispaly array={notificationList}/>
+            <NotificationsIcon onClick={clearNotification} />
+            { notificationCnt ? <span className="topbarIconBadge">{ notificationCnt }</span> : ""}
+            {displayNotification ? <NotifyDispaly array={notificationList}/> : ""}
           </div>
         </div>
         
