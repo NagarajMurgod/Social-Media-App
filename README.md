@@ -155,4 +155,15 @@ We welcome contributions to this project! If you'd like to contribute
 ## Application Screenshots
 
 ![](./Images/login.png)
-<img src="./Images/Registraion.png" width=250 height=200>
+
+![](./Images/Registraion.png)
+
+![](./Images/home.png)
+
+![](./Images/profile.png)
+
+![](./Images/othersProfile.png)
+
+![](./Images/Notificaiton.png)
+
+![](./Images/upload%20profile.png)
