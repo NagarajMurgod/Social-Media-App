@@ -11,8 +11,11 @@ A modern social media platform built with React for the frontend and Django for 
 
 ## Tech Stack
 
-- **Frontend**: React, React Router, Axios (for API requests).
+- **Frontend**: React, React Router, Axios (for API requests) and React context for authentication.
 - **Backend**: Django Rest Framework
 - **Database**: PostgreSQL 
 - **Authentication**: Session Authentication
 - **Styling**: CSS
+
+## Installation
+### Prerequisites
