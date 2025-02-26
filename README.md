@@ -98,16 +98,16 @@ The frontend will now be running at http://localhost:5173/.
 
 Once both servers are up, you can access the frontend at http://localhost:5173/ and start interacting with the app.
 
-    - Sign Up: Create a new account to start using the platform.
-    - Create Posts: Share your thoughts with images or text.
-    - Like & Comment: Engage with others' posts by liking and commenting.
-    - Follow Users: Keep up with the latest updates from your followed users.
+- Sign Up: Create a new account to start using the platform.
+- Create Posts: Share your thoughts with images or text.
+- Like & Comment: Engage with others' posts by liking and commenting.
+- Follow Users: Keep up with the latest updates from your followed users.
 
 ## API Endpoints
 
 The backend exposes the following API endpoints:
 1. Authentication
-    - ```POST /auth/signup/``` - user registration
+    - ``` POST /auth/signup/``` - user registration
     - ``` POST /auth/login/``` - User Login (Session authentication)
     - ``` POST /auth/logout/ ``` - User logout
     - ``` GET /auth/csrf_cookie/``` - Set CSRF token
@@ -119,6 +119,14 @@ The backend exposes the following API endpoints:
     - ``` DEL /post/{post id}/``` - Delete Post
     - ``` POST /post/{post id}/comments/``` Comment on a post
     - ``` GET /post/{post id}/comments/``` - Get Post comments
-    - ``` POST /post/{post id}/postLikeDislike/``` Post like and dislike
+    - ``` POST /post/{post id}/postLikeDislike/``` - Post like and dislike
 
 3. User
+    - ``` POST /user/profile/{user id}/ ```- Get the User profile Info
+    - ``` POST /user/profile/{user id}/ ``` - Update the user profile ( Bio , firstname , lastname and profile image)
+    - ``` POST /user/profile/follow/{user id}/ ``` - Follow User
+    - ``` POST /user/profile/unfollow/{user id}/ ``` - Unfollow User
+    - ``` GET /user/list/ ``` - Get all the users
+    - ``` GET /user/profile/{user id}/relations/?type=followers ``` - Get the followers of user
+    - ``` GET /user/profile/{user id}/relations/?type=followees ``` - Get the followees of user
+    - ``` GET /notifications/{user id}/ ``` - Get the Notification for user
