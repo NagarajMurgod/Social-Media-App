@@ -154,4 +154,4 @@ We welcome contributions to this project! If you'd like to contribute
 
 ## Application Screenshots
 
-![](./Images/login.png | width=100)
+![](./Images/login.png)
