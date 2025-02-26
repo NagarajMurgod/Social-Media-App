@@ -29,8 +29,29 @@ Before you begin, ensure you have the following installed:
 
 ### Backend Setup (Django)
 1. Clone the repository:
-    ``` 
-    git clone https://github.com/NagarajMurgod/Social-Media-App.git 
-    cd Social-Media-App
-    ```
+``` 
+git clone https://github.com/NagarajMurgod/Social-Media-App.git 
+cd Social-Media-App
+```
+2. Navigate to the backend directory:
+``` cd api ```
+
+3. Create a virtual environment and install dependencies:
+```
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+4. Set up the database (PostgreSQL):
+
+- Ensure PostgreSQL is running, and create a new database for the project.
+- Update the database configuration in backend/settings.py with your database credentials.
+
+5. Run migrations to set up the database schema:
+```python manage.py migrate```
+6. Create a superuser (for admin access):
+``` python manage.py createsuperuser ```
+7. Start the backend server:
+```python manage.py runserve```
+
 
