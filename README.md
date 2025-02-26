@@ -133,7 +133,7 @@ The backend exposes the following API endpoints:
     - ``` GET /user/profile/{user id}/relations/?type=followees ``` - Get the followees of user
     - ``` GET /notifications/{user id}/ ``` - Get the Notification for user
 
-### Areas for Contribution
+## Areas for Contribution
 We welcome contributions to this project! If you'd like to contribute
 
 - Integrate user Registration API with Frontend
@@ -145,7 +145,7 @@ We welcome contributions to this project! If you'd like to contribute
 - Improve the app’s mobile responsiveness and performance on various devices.
 - Implement a dark mode theme for the user interface
 
-### References
+## References
 
 - [Frontend Design 1](https://www.youtube.com/watch?v=zM93yZ_8SvE&list=PLj-4DlPRT48nfYgDK00oTjlDF4O0ZZyG8)
 - [Frontend design 2](https://www.youtube.com/watch?v=pFHyZvVxce0&list=PLj-4DlPRT48nfYgDK00oTjlDF4O0ZZyG8&index=2)
