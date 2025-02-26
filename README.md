@@ -8,6 +8,8 @@ A modern social media platform built with React for the frontend and Django for 
 - **Comments & Likes**: Interaction with posts through likes and comments.
 - **Follow System**: Users can follow and unfollow other users.
 - **Notification system**: (Optional) Notifications for new likes, comments, or follows.
+- **Infinite Scrolling** : Infinite scrolling feature like Instagram and Facebook
+
 
 ## Tech Stack
 
@@ -130,3 +132,22 @@ The backend exposes the following API endpoints:
     - ``` GET /user/profile/{user id}/relations/?type=followers ``` - Get the followers of user
     - ``` GET /user/profile/{user id}/relations/?type=followees ``` - Get the followees of user
     - ``` GET /notifications/{user id}/ ``` - Get the Notification for user
+
+### Areas for Contribution
+We welcome contributions to this project! If you'd like to contribute
+
+- Integrate user Registration API with Frontend
+- Integrate Send Comment api with frontend
+- Implement a feature to allow users to send direct messages to each other.
+- Instead of just following users, introduce a system for users to send and accept friend requests
+- Add more complex media management features, like resizing or auto-cropping images before upload
+- Implement real-time notifications for new likes, comments, and follows (using WebSockets or something similar)
+- Improve the app’s mobile responsiveness and performance on various devices.
+- Implement a dark mode theme for the user interface
+
+### References
+
+- [Frontend Design 1](https://www.youtube.com/watch?v=zM93yZ_8SvE&list=PLj-4DlPRT48nfYgDK00oTjlDF4O0ZZyG8)
+- [Frontend design 2](https://www.youtube.com/watch?v=pFHyZvVxce0&list=PLj-4DlPRT48nfYgDK00oTjlDF4O0ZZyG8&index=2)
+- [Django RestFramework Views Doc](https://www.cdrf.co/)
+- [We all are utilizing this one 😂](https://chatgpt.com/)
