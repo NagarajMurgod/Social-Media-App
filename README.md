@@ -151,3 +151,13 @@ We welcome contributions to this project! If you'd like to contribute
 - [Frontend design 2](https://www.youtube.com/watch?v=pFHyZvVxce0&list=PLj-4DlPRT48nfYgDK00oTjlDF4O0ZZyG8&index=2)
 - [Django RestFramework Views Doc](https://www.cdrf.co/)
 - [We all are utilizing this one 😂](https://chatgpt.com/)
+
+## Application Screenshots
+
+![](/Social-Media-App/Images/login.png | width=100)
+![](/Social-Media-App/Images/Registraion.png | width=100)
+![](/Social-Media-App/Images/home.png | width=100)
+![](/Social-Media-App/Images/Profile.png | width=100)
+![](/Social-Media-App/Images/othersProfile.png | width=100)
+![](/Social-Media-App/Images/upload%20profile.png | width=100)
+![](/Social-Media-App/Images/Notificaiton.png | width=100)

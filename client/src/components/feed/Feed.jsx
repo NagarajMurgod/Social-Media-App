@@ -31,11 +31,9 @@ const Feed = ({user_id, profile_img}) => {
         setPosts(prevItems => [...prevItems, ...data.results]);
       }
       setNextData(data.next ? data.next : null);
-    }
-    catch(err){}
-    finally{
       setLoading(false);
     }
+    catch(err){}
   };
 
 

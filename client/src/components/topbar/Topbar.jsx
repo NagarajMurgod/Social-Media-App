@@ -89,7 +89,9 @@ const  Topbar = memo(() => {
       setDisplayNotification((prev)=>!prev)
       setNotificationCnt(0)
 
-    }catch{}
+    }catch{
+      console.log("error")
+    }
   }
 
   return (

@@ -45,10 +45,13 @@ const Rightbar = ({ user1, user_id }) => {
   const getUsers = async (rel) => {
     
     if(user_id){
-      const res = await axios.get(PF+`/user/profile/${user_id}/relations/?type=${rel}`)
-      // console.log(res.data);
-      const data = await res.data
-      setFollowers(data);
+      try{
+        const res = await axios.get(PF+`/user/profile/${user_id}/relations/?type=${rel}`)
+        // console.log(res.data);
+        const data = await res.data
+        setFollowers(data);
+      }
+      catch{}
       
     }
 
