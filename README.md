@@ -19,3 +19,18 @@ A modern social media platform built with React for the frontend and Django for 
 
 ## Installation
 ### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Python 3.x
+- Node.js and npm (for React)
+- PostgreSQL (or another DBMS if you prefer)
+- Git ( for cloning repo )
+
+### Backend Setup (Django)
+1. Clone the repository:
+    ``` 
+    git clone https://github.com/NagarajMurgod/Social-Media-App.git 
+    cd Social-Media-App
+    ```
+
