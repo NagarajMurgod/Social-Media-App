@@ -50,36 +50,37 @@ pip install -r requirements.txt
 - Update the database configuration in backend/settings.py with your database credentials.
 
 5. Run migrations to set up the database schema:
-```
-python manage.py migrate
-```
+    ```
+    python manage.py migrate
+    ```
 6. Create a superuser (for admin access):
-```
- python manage.py createsuperuser
-```
+    ```
+    python manage.py createsuperuser
+    ```
 7. Start the backend server:
-```
-python manage.py runserve
-```
+    ```
+    python manage.py runserve
+    ```
 
 ### Frontend Setup (React)
 
 1. Navigate to the frontend directory:
-```
-cd ../client
-```
+    ```
+    cd ../client
+    ```
 2. Install the required npm dependencies:
-```
-npm install
-```
+    ```
+    npm install
+    ```
 3. Set up environment variables
 - Create a .env file in the frontend directory with the following:
+
     ```
     VITE_API_URL = 'http://localhost:8000'
     ```
 4. Start the frontend development server:
-```
-npm run dev
-```
+    ```
+    npm run dev
+    ```
 
 The frontend will now be running at http://localhost:5173/.
