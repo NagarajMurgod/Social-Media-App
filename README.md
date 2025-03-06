@@ -1,4 +1,4 @@
-# Social Medai App
+# Social Media App
 A modern social media platform built with React for the frontend and Django for the backend. This app allows users to create accounts, post content, follow other users, and interact with posts through likes and comments.
 
 ## Features
